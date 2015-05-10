@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * <ul>
  *   <li>The content type of the response is set and is something other than HTML.</li>
- *   <li>The {@link org.baswell.layouts.Layouts#NO_LAYOUT}</li> HttpServletRequest attribute is set to true.</li>
+ *   <li>The {@link org.baswell.layouts.Layouts#NO_LAYOUT} {@code HttpServletRequest} attribute is set to true.</li>
  *   <li>The request returns no content.</li>
  *   <li>The layout specified by {@link org.baswell.layouts.Layouts#LAYOUT} is invalid.</li>
  * </ul>
