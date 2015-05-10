@@ -37,7 +37,8 @@ public class
 
   /**
    * <p>The view can be rendered in a layout in one of two ways:</p>
-   * <code>
+   * <pre>
+   * {@code
    * <html>
    *  <head>
    *    ${view.yieldHead(pageContext)}
@@ -46,7 +47,8 @@ public class
    *    <% ((View)request.getAttribute(Layouts.VIEW)).yieldBody(pageContext); %>
    *  </body>
    * </html>
-   * </code>
+   * }
+   * </pre>
    */
   static public final String VIEW = "view";
 }

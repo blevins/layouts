@@ -39,12 +39,14 @@ import static org.baswell.layouts.SharedMethods.*;
  * You can use the filter parameters <i>ONLY</i> and <i>EXCEPT</i> for finer grained control (than <i>url-pattern</i>) over which HTTP requests the {@code LayoutsFilter} is engaged for.
  * </p>
  *
- * <code>
+ * <pre>
+ * {@code
  * <init-param>
  *   <param-name>ONLY</param-name>
  *   <param-value>/home/.*,/users/.*</param-value>
  * </init-param>
- * </code>
+ * }
+ * </pre>
  *
  * <p>
  * The <i>ONLY</i> parameter must be a list (comma delimited) of valid Java regular expression. If specified, only request URIs that match one of these
@@ -55,12 +57,14 @@ import static org.baswell.layouts.SharedMethods.*;
  * The other supported parameter is <i>EXCEPT</i>:
  * </p>
  *
- * <code>
+ * <pre>
+ * {@code
  * <init-param>
  *   <param-name>EXCEPT</param-name>
  *   <param-value>.*\.html$,.*\.htm$</param-value>
  * </init-param>
- * </code>
+ * }
+ * </pre>
  *
  * <p>
  * The <i>EXCEPT</i> parameter must be a list (comma delimited) of valid Java regular expression. If specified, only request URIs that don't match any of these patterns
