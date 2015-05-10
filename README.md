@@ -49,7 +49,7 @@ Layouts uses basic JSP and XHTML and is web framework agnostic.
 ## Getting Started
 
 ### Direct Download
-You can download <a href="https://github.com/baswerc/layouts/releases/download/v1.1/layouts-1.1.jar">layouts-1.1.jar</a> directly and place in your project.
+You can download <a href="https://github.com/baswerc/layouts/releases/download/v1.0/layouts-1.0.jar">layouts-1.0.jar</a> directly and place in your project.
 
 ### Using Maven
 Add the following dependency into your Maven project:
