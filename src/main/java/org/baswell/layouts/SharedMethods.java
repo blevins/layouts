@@ -19,7 +19,7 @@ class SharedMethods
 {
   static boolean isHtmlContent(String mimeType)
   {
-    return (mimeType == null) || mimeType.contains("text/html") || mimeType.contains("application/xhtml") || mimeType.equals("*/*");
+    return (mimeType == null) || mimeType.contains("text/html") || mimeType.contains("application/xhtml") || mimeType.contains("*/*");
   }
 
   static boolean trueValue(Object attribute)
