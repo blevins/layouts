@@ -77,6 +77,23 @@ public class View
   }
 
   /**
+   * <p>
+   * Yield the content of the <footer> tag. Same as:
+   * </p>
+   *
+   * <code>
+   * yield("footer", pageContext)
+   * </code>
+   *
+   * @param pageContext The PageContext of the layout JSP file.
+   * @throws java.io.IOException
+   */
+  public void yieldFooter(PageContext pageContext) throws IOException
+  {
+    yield("footer", pageContext);
+  }
+
+  /**
    * Yield the entire content of the view.
    *
    * @param pageContext The PageContext of the layout JSP file.
