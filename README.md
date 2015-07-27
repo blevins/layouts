@@ -111,7 +111,7 @@ If both _ONLY_ and _EXCEPT_ are specified then a request will only be a candidat
 ## Layout Files
 
 Each of your layouts should be a valid JSP file. The name of the layout will be the file name minus the extension (case sensitive). So for example the layout
-_/WEB-INF/jsps/layout/basic.jsp_ will have the name _basic_.
+_/WEB-INF/jsps/layouts/basic.jsp_ will have the name _basic_.
 
 Within the context of a layout, `yield` identifies a section where content from the view should be inserted. The simplest way to use this is to have a
 single yield, into which the entire contents of the view currently being rendered is inserted:
