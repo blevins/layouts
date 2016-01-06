@@ -158,6 +158,52 @@ public class View
     }
   }
 
+  /**
+   * Is the tag name defined in the current content?.
+   *
+   * @param tagName The name of the outermost tag to yield the content of.
+   * @param pageContext The PageContext of the layout JSP file.
+   * @return <code>true</code> if the given tag name is found in the current page content.
+   * @throws java.io.IOException
+   */
+  public boolean contains(String tagName, PageContext pageContext) throws IOException
+  {
+    /*
+     * TODO JSPs using a different encoding then the system default will break here if the values for the characters in the opening
+     * or closing tags are different. Not sure how to grab the encoding from the JSP that created the current content automatically.
+     * Maybe add a filter parameter to specify the encoding if it's different then default.
+     */
+    byte[] tagNameBytes = tagName.getBytes();
+    byte[] openTagBytes = new byte[tagNameBytes.length + 2];
+    openTagBytes[0] = LESS_THAN;
+    for (int i = 0; i < tagNameBytes.length; i++)
+    {
+      openTagBytes[i + 1] = tagNameBytes[i];
+    }
+    openTagBytes[openTagBytes.length - 1] = GREATER_THAN;
+
+    int openTagIndex = indexOf(content, openTagBytes);
+    if (openTagIndex >= 0)
+    {
+      byte[] closedTagBytes = new byte[tagNameBytes.length + 3];
+      closedTagBytes[0] = LESS_THAN;
+      closedTagBytes[1] = SOLIDUS;
+      for (int i = 0; i < tagNameBytes.length; i++)
+      {
+        closedTagBytes[i + 2] = tagNameBytes[i];
+      }
+      closedTagBytes[closedTagBytes.length - 1] = GREATER_THAN;
+
+      int closeTagIndex = lastIndexOf(content, closedTagBytes);
+      return (closeTagIndex > openTagIndex);
+    }
+    else
+    {
+      return false;
+    }
+  }
+
+
   /*
    * Knuth-Morris-Pratt Algorithm for Pattern Matching
    *
