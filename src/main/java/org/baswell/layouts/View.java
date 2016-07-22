@@ -204,89 +204,58 @@ public class View
   }
 
 
-  /*
-   * Knuth-Morris-Pratt Algorithm for Pattern Matching
-   *
-   * http://www.fmi.uni-sofia.bg/fmi/logic/vboutchkova/sources/KMPMatch_java.html
-   * http://en.wikipedia.org/wiki/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm
-   */
   static int indexOf(byte[] data, byte[] pattern)
   {
-    if (data.length == 0) return -1;
-    int j = 0;
+    int matchIndex = 0;
 
-    int[] failure = computeFailure(pattern);
-
+    int finalIndex = pattern.length - 1;
     for (int i = 0; i < data.length; i++)
     {
-      while (j > 0 && pattern[j] != data[i])
+      if (data[i] == pattern[matchIndex])
       {
-        j = failure[j - 1];
+        if (matchIndex == finalIndex)
+        {
+          return i - finalIndex;
+        }
+        else
+        {
+          ++matchIndex;
+        }
       }
-      if (pattern[j] == data[i])
+      else
       {
-        j++;
-      }
-      if (j == pattern.length)
-      {
-        return i - pattern.length + 1;
+        matchIndex = 0;
       }
     }
+
     return -1;
   }
 
-  /*
-   * Start from end and work toward the front. The byte[] content could be large so don't want to reverse it (which would
-   * make the logic clearer).
-   */
   static int lastIndexOf(byte[] data, byte[] pattern)
   {
-    if (data.length == 0) return -1;
-    int j = pattern.length - 1;
-
-    int[] failure = computeFailure(pattern);
+    int startMatchIndex = pattern.length - 1;
+    int matchIndex = startMatchIndex;
 
     for (int i = data.length - 1; i >= 0; i--)
     {
-      while (j < (pattern.length - 2) && pattern[j] != data[i])
+      if (data[i] == pattern[matchIndex])
       {
-        j = pattern.length - failure[j + 1] - 1;
+        if (matchIndex == 0)
+        {
+          return i;
+        }
+        else
+        {
+          --matchIndex;
+        }
       }
-      if (pattern[j] == data[i])
+      else
       {
-        j--;
-      }
-
-      if (j == 0)
-      {
-        return i - 1;
+        matchIndex = startMatchIndex;
       }
     }
+
     return -1;
-  }
-
-  /*
-   * Computes the failure function using a boot-strapping process, where the pattern is matched against itself.
-   */
-  static int[] computeFailure(byte[] pattern)
-  {
-    int[] failure = new int[pattern.length];
-
-    int j = 0;
-    for (int i = 1; i < pattern.length; i++)
-    {
-      while (j > 0 && pattern[j] != pattern[i])
-      {
-        j = failure[j - 1];
-      }
-      if (pattern[j] == pattern[i])
-      {
-        j++;
-      }
-      failure[i] = j;
-    }
-
-    return failure;
   }
 
   static final byte LESS_THAN = (byte)'<';
