@@ -160,7 +160,6 @@ public class LayoutsFilter implements Filter
     }
 
     String layoutsParameter = filterConfig.getInitParameter("LAYOUTS");
-    System.out.println("LAYOUTS -> " + layoutsParameter);
     if (layoutsParameter == null || layoutsParameter.trim().isEmpty())
     {
       File layoutsDir = new File(filterConfig.getServletContext().getRealPath(layoutsDirPath));
@@ -218,7 +217,6 @@ public class LayoutsFilter implements Filter
           {
             layoutName = layoutName.substring(0, index);
           }
-          System.out.println(layoutName + "->" + layoutPath);
           layouts.put(layoutName, new Layout(layoutName, layoutPath));
 
         }
