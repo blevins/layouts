@@ -15,7 +15,12 @@
  */
 package org.baswell.layouts;
 
-import javax.servlet.*;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -131,7 +136,7 @@ public class LayoutsFilter implements Filter
     {
       try
       {
-        layoutDecider = (UseLayoutDecider)Class.forName(useLayoutDeciderClass).getConstructor().newInstance();
+        layoutDecider = (UseLayoutDecider) Class.forName(useLayoutDeciderClass).getConstructor().newInstance();
       }
       catch (Exception e)
       {
@@ -149,41 +154,76 @@ public class LayoutsFilter implements Filter
       layoutsDirPath = "/" + layoutsDirPath;
     }
 
-
-    File layoutsDir = new File(filterConfig.getServletContext().getRealPath(layoutsDirPath));
-    if (!layoutsDir.isDirectory())
+    if (!layoutsDirPath.endsWith("/"))
     {
-      throw new ServletException("Layouts directory: " + layoutsDirPath + " does not exists");
+      layoutsDirPath += "/";
     }
-    else
-    {
-      if (!layoutsDirPath.endsWith("/"))
-      {
-        layoutsDirPath += "/";
-      }
 
-      layouts = new HashMap<String, Layout>();
-      File[] layoutFiles = layoutsDir.listFiles();
-      if (layoutFiles != null)
+    String layoutsParameter = filterConfig.getInitParameter("LAYOUTS");
+    System.out.println("LAYOUTS -> " + layoutsParameter);
+    if (layoutsParameter == null || layoutsParameter.trim().isEmpty())
+    {
+      File layoutsDir = new File(filterConfig.getServletContext().getRealPath(layoutsDirPath));
+      if (!layoutsDir.isDirectory())
       {
-        for (File layoutFile : layoutFiles)
+        throw new ServletException("Layouts directory: " + layoutsDirPath + " does not exists");
+      }
+      else
+      {
+        layouts = new HashMap<String, Layout>();
+        File[] layoutFiles = layoutsDir.listFiles();
+        if (layoutFiles != null)
         {
-          if (layoutFile.isFile())
+          for (File layoutFile : layoutFiles)
           {
-            String layoutFileName = layoutFile.getName();
-            if (layoutFileName.toLowerCase().endsWith("jsp") || layoutFileName.toLowerCase().endsWith("jspx"))
+            if (layoutFile.isFile())
             {
-              String layoutName = layoutFileName;
-              int index = layoutName.indexOf('.');
-              if (index > -1)
+              String layoutFileName = layoutFile.getName();
+              if (layoutFileName.toLowerCase().endsWith("jsp") || layoutFileName.toLowerCase().endsWith("jspx"))
               {
-                layoutName = layoutName.substring(0, index);
+                String layoutName = layoutFileName;
+                int index = layoutName.indexOf('.');
+                if (index > -1)
+                {
+                  layoutName = layoutName.substring(0, index);
+                }
+                layouts.put(layoutName, new Layout(layoutName, layoutsDirPath + layoutFileName));
               }
-              layouts.put(layoutName, new Layout(layoutName, layoutsDirPath + layoutFileName));
             }
           }
         }
       }
+    }
+    else
+    {
+      layouts = new HashMap<String, Layout>();
+      String[] layoutParameterValues = layoutsParameter.split(",");
+      for (String layoutParameterValue : layoutParameterValues)
+      {
+        if (!layoutParameterValue.trim().isEmpty())
+        {
+          String layoutPath = layoutParameterValue.trim();
+          if (!layoutPath.startsWith("/"))
+          {
+            layoutPath = layoutsDirPath + layoutPath;
+          }
+
+
+          String layoutName = layoutPath;
+
+          int index = layoutPath.lastIndexOf('/');
+          layoutName = layoutName.substring(index + 1, layoutName.length());
+          index = layoutName.indexOf('.');
+          if (index > -1)
+          {
+            layoutName = layoutName.substring(0, index);
+          }
+          System.out.println(layoutName + "->" + layoutPath);
+          layouts.put(layoutName, new Layout(layoutName, layoutPath));
+
+        }
+      }
+
     }
 
     String defaultLayoutName = filterConfig.getInitParameter("DEFAULT_LAYOUT");
