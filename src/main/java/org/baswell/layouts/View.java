@@ -15,8 +15,8 @@
  */
 package org.baswell.layouts;
 
-import javax.servlet.ServletResponse;
-import javax.servlet.jsp.PageContext;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.jsp.PageContext;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -56,7 +56,7 @@ public class View
    */
   public void yieldHead(PageContext pageContext) throws IOException
   {
-    yield("head", pageContext);
+    this.yield("head", pageContext);
   }
 
   /**
@@ -73,7 +73,7 @@ public class View
    */
   public void yieldBody(PageContext pageContext) throws IOException
   {
-    yield("body", pageContext);
+    this.yield("body", pageContext);
   }
 
   /**
@@ -90,7 +90,7 @@ public class View
    */
   public void yieldFooter(PageContext pageContext) throws IOException
   {
-    yield("footer", pageContext);
+    this.yield("footer", pageContext);
   }
 
   /**
